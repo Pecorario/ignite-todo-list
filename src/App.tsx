@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './App.module.css';
 import { Header } from './components/Header';
+import { TasksList } from './components/TasksList';
 import './global.css';
 
 interface Task {
@@ -14,7 +15,7 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [countId, setCountId] = useState(0);
 
-  function onSubmit() {
+  function handleSubmit() {
     const newTask = {
       id: countId + 1,
       content: task,
@@ -26,20 +27,33 @@ function App() {
     setTask('');
   }
 
+  function handleDelete(id: number) {
+    const newTasks = tasks.filter(task => task.id !== id);
+
+    setTasks(newTasks);
+  }
+
+  function handleSelect(id: number) {
+    const newTasks = tasks.map(task => {
+      if (task.id === id) {
+        return { ...task, finished: !task.finished };
+      }
+      return { ...task };
+    });
+
+    setTasks(newTasks);
+  }
+
   return (
     <div className={styles.wrapper}>
-      <Header setTask={setTask} task={task} onSubmit={onSubmit} />
+      <Header setTask={setTask} task={task} onSubmit={handleSubmit} />
 
       <main>
-        <ul className={styles.tasksList}>
-          {tasks.length === 0 ? (
-            <p>Achamo nada</p>
-          ) : (
-            tasks?.map(item => {
-              return <li key={item.id}>{item.content}</li>;
-            })
-          )}
-        </ul>
+        <TasksList
+          tasks={tasks}
+          onDeleteTask={handleDelete}
+          onSelect={handleSelect}
+        />
       </main>
     </div>
   );
