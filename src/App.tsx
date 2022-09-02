@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import styles from './App.module.css';
+
 import { Header } from './components/Header';
 import { TasksList } from './components/TasksList';
+
+import styles from './App.module.css';
 import './global.css';
 
 interface Task {
   id: number;
   content: string;
-  finished: boolean;
+  done: boolean;
 }
 
 function App() {
@@ -19,7 +21,7 @@ function App() {
     const newTask = {
       id: countId + 1,
       content: task,
-      finished: false
+      done: false
     };
 
     setCountId(prevState => prevState + 1);
@@ -36,7 +38,7 @@ function App() {
   function handleSelect(id: number) {
     const newTasks = tasks.map(task => {
       if (task.id === id) {
-        return { ...task, finished: !task.finished };
+        return { ...task, done: !task.done };
       }
       return { ...task };
     });

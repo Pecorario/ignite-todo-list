@@ -21,6 +21,8 @@ export function Header({ onSubmit, setTask, task }: HeaderProps) {
     setTask(event.target.value);
   }
 
+  const isTextEmpty = task.length === 0;
+
   return (
     <div className={styles.header}>
       <img src={todoLogo} alt="Logo" />
@@ -32,7 +34,7 @@ export function Header({ onSubmit, setTask, task }: HeaderProps) {
           value={task}
           onChange={handleNewTaskChange}
         />
-        <button type="submit">
+        <button type="submit" disabled={isTextEmpty}>
           Criar
           <PlusCircle size={20} weight="bold" />
         </button>
